@@ -1,0 +1,35 @@
+{
+    "items": [
+        {
+            "item_ref": "00099",
+            "item_libelle": "Flayer 03",
+            "item_prix": "3000",
+            "item_prix_devise": "CDF",
+            "item_nature_ref": "83IUD00"
+        },
+        {
+            "item_ref": "00140",
+            "item_libelle": "Bache",
+            "item_prix": "2400",
+            "item_prix_devise": "CDF",
+            "item_nature_ref": "83IUD00"
+        },
+        {
+            "item_ref": "00042",
+            "item_libelle": "item KSOS",
+            "item_prix": "1700",
+            "item_prix_devise": "CDF",
+            "item_nature_ref": "83IUDUI"
+        }
+    ],
+    "item_natures": [
+        {
+            "item_nature_ref": "83IUDUI",
+            "item_nature_libelle": "1ml"
+        },
+        {
+            "item_nature_ref": "83IUD00",
+            "item_nature_libelle": "10kg"
+        }
+    ]
+}
