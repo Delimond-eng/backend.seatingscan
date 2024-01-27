@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Evenement extends Model
+class ScanGuest extends Model
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'evenements';
+    protected $table = 'scan_guests';
 
     /**
      * The primary key for the model.
@@ -28,10 +28,8 @@ class Evenement extends Model
      * @var array
      */
     protected $fillable = [
-        'event_nom',
-        'event_code',
-        'event_couple_nom',
-        'event_date_heure',
+        'event_id',
+        'invite_id',
     ];
 
     /**
@@ -49,8 +47,7 @@ class Evenement extends Model
      * @var array
      */
     protected $casts = [
-        'event_created_At'=>'datetime:d/m/Y H:i',
-        'event_date_heure'=>'datetime:d/m/Y H:i'
+        'scan_created_At'=>'datetime:d/m/Y H:i'
     ];
 
     /**
@@ -59,8 +56,7 @@ class Evenement extends Model
      * @var array
      */
     protected $dates = [
-        'event_created_At',
-        'event_date_heure',
+        'scan_created_At'
     ];
 
     /**
@@ -71,11 +67,21 @@ class Evenement extends Model
     public $timestamps = false;
 
     /**
-     * Evenement tables des invites
-     * @return HasMany
-    */
-    public function tables():HasMany
+     * Appartenance à l'Evenement
+     * @return BelongsTo
+     */
+    public function event():BelongsTo
     {
-        return $this->hasMany(Table::class, foreignKey: 'event_id', localKey: 'id');
+        return $this->belongsTo(Evenement::class, foreignKey: 'event_id');
     }
+
+    /**
+     * Appartenance à un invité
+     * @return BelongsTo
+    */
+    public function invite():BelongsTo
+    {
+        return $this->belongsTo(Invite::class, foreignKey: 'invite_id');
+    }
+
 }

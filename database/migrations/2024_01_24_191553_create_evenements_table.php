@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('event_code')->unique();
             $table->string('event_couple_nom');
             $table->string('event_status')->default('actif');
-            $table->timestamp('event_date')->nullable();
+            $table->timestamp('event_date_heure')->nullable();
             $table->timestamp('event_created_At')->useCurrent();
         });
     }

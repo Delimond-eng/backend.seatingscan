@@ -45,6 +45,17 @@ class Invite extends Model
     ];
 
     /**
+     * Conversion de svg en data:image/png;base64,b64
+     * @param $value
+     * @return string
+
+    public function getInviteQrcodeAttribute($value): string
+    {
+        return 'data:image/png;base64,' . base64_encode($value);
+    }
+     */
+
+    /**
      * The attributes that should be casted to native types.
      *
      * @var array
