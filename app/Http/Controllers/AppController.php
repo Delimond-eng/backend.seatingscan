@@ -113,7 +113,9 @@ class AppController extends Controller
                 return response()->json(['errors' => "La table sélectionnée est déjà pleine !" ]);
             }
             $lastInvite = Invite::create($datas);
-            $inviteJson = $lastInvite->toJson();
+            //$lastInvite->with('table');
+            $inviteInfos = Invite::with('table')->find($lastInvite->id);
+            $inviteJson = $inviteInfos->toJson();
             $qrCode = $this->generateQRCode($inviteJson);
             $lastInvite->invite_qrcode = $qrCode;
             $lastInvite->save();
@@ -143,8 +145,6 @@ class AppController extends Controller
      * @author Gaston delimond
      * @DateTime 26/01/2024 12:26
      */
-
-
     public function transfertInvite(Request $request):JsonResponse
     {
         try {
@@ -152,17 +152,23 @@ class AppController extends Controller
                 "invite_id"=>"required|int|exists:invites,id",
                 "table_id"=>"required|int|exists:tables,id"
             ]);
-            $invite = Invite::findOrFail((int)$datas['invite_id']);
-            $invite->table_id = $datas['table_id'];
+            $invite = Invite::with('table')->find((int)$datas['invite_id']);
+            $invite['table_id'] = $datas['table_id'];
             $countTable = $this->countTablePlace((int)$datas["table_id"]);
             if($countTable <= 0 ){
                 return response()->json(['errors' => "La table sélectionnée est déjà pleine !" ]);
             }
             $done = $invite->save();
+
             if($done){
+                $scanning =ScanGuest::create([
+                    "event_id"=>$invite['event_id'],
+                    "invite_id"=>$invite['id']
+                ]);
                 return response()->json([
                     "status"=>"success",
-                    "message"=>"invité transferé avec succès !"
+                    "invite"=>$invite,
+                    "scan"=>$scanning
                 ]);
             }
             else{
@@ -257,11 +263,13 @@ class AppController extends Controller
                 "event_id"=>"required|int|exists:evenements,id",
                 "invite_id"=>"required|int|unique:scan_guests,invite_id"
             ]);
+
             $scanning = ScanGuest::create($data);
+            $invite = Invite::with('table')->find($scanning->invite_id);
             if (isset($scanning)){
                 return response()->json([
                     "status"=>"success",
-                    "message"=>"Invité validé avec succès !"
+                    "invite"=>$invite
                 ]);
             }
             else{

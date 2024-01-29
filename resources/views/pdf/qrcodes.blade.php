@@ -30,7 +30,7 @@
 
         p {
             font-family: 'Arial', sans-serif;
-            font-size: 8px;
+            font-size: 5px;
             margin-top:1px;
             text-overflow: ellipsis;
         }
